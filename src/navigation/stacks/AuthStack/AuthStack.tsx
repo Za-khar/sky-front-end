@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator<TAuthStack>()
 
 export const AuthStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName={EAuthStackScreens.Login}>
       <Stack.Screen name={EAuthStackScreens.Login} component={LoginScreen} />
       <Stack.Screen
         name={EAuthStackScreens.Registration}

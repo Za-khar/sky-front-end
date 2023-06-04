@@ -64,3 +64,4 @@ yarn-error.log
 
 package-lock.json
 Podfile.lock
+.env

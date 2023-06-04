@@ -34,6 +34,34 @@ export const RegistrationForm = ({ onSubmit }: TRegistrationFormProps) => {
 
       <Controller
         control={control}
+        name="name"
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
+          <StandartInput
+            label={t('name')}
+            placeholder={t('name_placeholder')}
+            value={value}
+            onChange={onChange}
+            error={error?.message}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="surname"
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
+          <StandartInput
+            label={t('surname')}
+            placeholder={t('surname_placeholder')}
+            value={value}
+            onChange={onChange}
+            error={error?.message}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
         name="password"
         render={({ field: { value, onChange }, fieldState: { error } }) => (
           <PasswordInput

@@ -95,6 +95,7 @@ android {
 
     namespace "com.sky"
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.sky"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion

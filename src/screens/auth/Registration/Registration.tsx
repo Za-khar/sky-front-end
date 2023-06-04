@@ -3,15 +3,19 @@ import { RegistrationForm } from './components'
 import { TRegistrationForm } from './components/RegistrationForm/types'
 import { ScrollView, Center, Stack } from 'native-base'
 import { MainLogo } from '@app/components/logos'
+import { useRegistrationMutation } from '@app/store/api'
+import _ from 'lodash'
 
 export const RegistrationScreen = () => {
+  const [register] = useRegistrationMutation()
+
   const onSubmit = (data: TRegistrationForm) => {
-    console.log(data)
+    register(_.omit(data, 'confirmationPassword'))
   }
 
   return (
     <ScrollView backgroundColor="white">
-      <Stack space={5} paddingTop="25%">
+      <Stack space={5} paddingTop="10%">
         <MainLogo />
 
         <Center w="80%" alignSelf="center">

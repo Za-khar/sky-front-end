@@ -32,7 +32,7 @@ export const RootContext = ({ children }: PropsWithChildren) => {
   })
   return (
     <SafeAreaProvider>
-      <NativeBaseProvider>
+      <NativeBaseProvider theme={theme}>
         <GestureHandlerRootView style={styles.safeAreaStyle}>
           <SafeAreaView style={styles.safeAreaStyle}>{children}</SafeAreaView>
         </GestureHandlerRootView>

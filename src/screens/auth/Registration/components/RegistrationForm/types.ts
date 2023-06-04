@@ -6,4 +6,6 @@ export type TRegistrationForm = {
   login: string
   password: string
   confirmationPassword: string
+  name: string
+  surname: string
 }
