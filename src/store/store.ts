@@ -9,7 +9,7 @@ import { articleApi } from './api/article'
 import { commentApi } from './api/comment'
 
 export const store = configureStore({
-  devTools: true,
+  devTools: false,
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,

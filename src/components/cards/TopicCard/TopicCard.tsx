@@ -45,7 +45,7 @@ export const TopicCard = ({ data, renderButton }: TTopicCard) => {
       {renderButton ? (
         renderButton(data)
       ) : (
-        <Button onPress={onPressUpdate} isLoading={isLoading}>
+        <Button onPress={onPressUpdate} isLoading={isLoading} ml="24px">
           {t(data.selected ? 'btn_remove' : 'btn_add')}
         </Button>
       )}
