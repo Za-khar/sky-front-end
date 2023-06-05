@@ -1,5 +1,6 @@
 export type TEditFormProps = {
   onSubmit: (data: TEditForm) => void
+  loading: boolean
 }
 
 export type TEditForm = {

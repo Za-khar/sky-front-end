@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { loginFormSchema } from './validation'
 import { TLoginFormProps } from './types'
 
-export const LoginForm = ({ onSubmit }: TLoginFormProps) => {
+export const LoginForm = ({ onSubmit, loading }: TLoginFormProps) => {
   const { t } = useTranslation()
 
   const { control, handleSubmit } = useForm<TLoginForm>({
@@ -46,7 +46,7 @@ export const LoginForm = ({ onSubmit }: TLoginFormProps) => {
         )}
       />
 
-      <Button w="60%" onPress={handleSubmit(onSubmit)}>
+      <Button w="60%" onPress={handleSubmit(onSubmit)} isLoading={loading}>
         {t('btn_next')}
       </Button>
     </Stack>

@@ -40,6 +40,9 @@ export const userApi = createApi({
           url: 'myProfile',
           method: 'PUT',
           data,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         }
       },
       async onQueryStarted(args, { dispatch, queryFulfilled }) {

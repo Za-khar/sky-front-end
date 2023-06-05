@@ -7,7 +7,7 @@ import { useRegistrationMutation } from '@app/store/api'
 import _ from 'lodash'
 
 export const RegistrationScreen = () => {
-  const [register] = useRegistrationMutation()
+  const [register, { isLoading }] = useRegistrationMutation()
 
   const onSubmit = (data: TRegistrationForm) => {
     register(_.omit(data, 'confirmationPassword'))
@@ -19,7 +19,7 @@ export const RegistrationScreen = () => {
         <MainLogo />
 
         <Center w="80%" alignSelf="center">
-          <RegistrationForm onSubmit={onSubmit} />
+          <RegistrationForm onSubmit={onSubmit} loading={isLoading} />
         </Center>
       </Stack>
     </ScrollView>

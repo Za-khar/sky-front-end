@@ -8,7 +8,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { registrationFormSchema } from './validation'
 import { TRegistrationFormProps } from './types'
 
-export const RegistrationForm = ({ onSubmit }: TRegistrationFormProps) => {
+export const RegistrationForm = ({
+  onSubmit,
+  loading,
+}: TRegistrationFormProps) => {
   const { t } = useTranslation()
 
   const { control, handleSubmit } = useForm<TRegistrationForm>({
@@ -88,7 +91,7 @@ export const RegistrationForm = ({ onSubmit }: TRegistrationFormProps) => {
         )}
       />
 
-      <Button w="60%" onPress={handleSubmit(onSubmit)}>
+      <Button w="60%" onPress={handleSubmit(onSubmit)} isLoading={loading}>
         {t('btn_next')}
       </Button>
     </Stack>

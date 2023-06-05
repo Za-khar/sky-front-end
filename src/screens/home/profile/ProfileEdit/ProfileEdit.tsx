@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { EditForm } from './EditForm'
 import { ScrollView, Center, Stack, Button } from 'native-base'
 import { TEditForm } from './EditForm/types'
@@ -10,16 +10,26 @@ import _ from 'lodash'
 import { useNavigation } from '@react-navigation/native'
 import { EProfileStackScreens } from '@app/navigation/stacks'
 import { useTranslation } from 'react-i18next'
+import { ActionModal } from '@app/components/modals'
 
 export const ProfileEditScreen = () => {
   const navigation = useNavigation()
   const { t } = useTranslation()
 
-  const [updateProfile] = useUpdateProfileMutation()
+  const [openConfirmModal, setOpenConfirmModal] = useState(false)
+
+  const onOpen = () => {
+    setOpenConfirmModal(true)
+  }
+
+  const onClose = () => {
+    setOpenConfirmModal(false)
+  }
+
+  const [updateProfile, { isLoading, isSuccess }] = useUpdateProfileMutation()
   const [deleteProfile] = useDeleteProfileMutation()
 
   const onSubmit = (data: TEditForm) => {
-    console.log(data)
     updateProfile(_.omitBy(data, _.isEmpty))
   }
 
@@ -31,26 +41,46 @@ export const ProfileEditScreen = () => {
     deleteProfile()
   }
 
+  useEffect(() => {
+    if (isSuccess) {
+      navigation.goBack()
+    }
+  }, [isSuccess])
+
   return (
-    <ScrollView backgroundColor="white">
-      <Stack space={10} paddingTop="10%">
-        <Center w="90%" alignSelf="center">
-          <EditForm onSubmit={onSubmit} />
-        </Center>
+    <>
+      <ScrollView backgroundColor="white">
+        <Stack space={10} paddingTop="10%">
+          <Center w="90%" alignSelf="center">
+            <EditForm onSubmit={onSubmit} loading={isLoading} />
+          </Center>
 
-        <Button onPress={pressChangePassword} alignSelf="center" variant="link">
-          {t('change_password')}
-        </Button>
+          <Button
+            onPress={pressChangePassword}
+            alignSelf="center"
+            variant="link"
+          >
+            {t('change_password')}
+          </Button>
 
-        <Button
-          onPress={pressDeleteAccount}
-          alignSelf="center"
-          variant="link"
-          colorScheme="secondary"
-        >
-          {t('delete_account')}
-        </Button>
-      </Stack>
-    </ScrollView>
+          <Button
+            onPress={onOpen}
+            alignSelf="center"
+            variant="link"
+            colorScheme="secondary"
+          >
+            {t('delete_account')}
+          </Button>
+        </Stack>
+      </ScrollView>
+
+      <ActionModal
+        isOpen={openConfirmModal}
+        onPressConfirm={pressDeleteAccount}
+        onClose={onClose}
+        title={t('delete_account')}
+        text={t('delete_account_confirmation')}
+      />
+    </>
   )
 }

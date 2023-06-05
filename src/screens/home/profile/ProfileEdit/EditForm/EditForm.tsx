@@ -1,5 +1,5 @@
 import { StandartInput, TextArea } from '@app/components/inputs'
-import { Stack, Button } from 'native-base'
+import { Stack, Button, Avatar } from 'native-base'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -7,8 +7,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { TEditForm, TEditFormProps } from './types'
 import { editFormSchema } from './validation'
 import { useTypedSelector } from '@app/store/store'
+import { TouchableWithoutFeedback } from 'react-native'
 
-export const EditForm = ({ onSubmit }: TEditFormProps) => {
+export const EditForm = ({ onSubmit, loading }: TEditFormProps) => {
   const { t } = useTranslation()
   const { user } = useTypedSelector((store) => store.userState)
 
@@ -31,6 +32,27 @@ export const EditForm = ({ onSubmit }: TEditFormProps) => {
 
   return (
     <Stack space={4} w="100%" alignItems="center">
+      <Controller
+        name="avatar"
+        control={control}
+        render={({ field: { value } }) => (
+          <TouchableWithoutFeedback>
+            <Avatar
+              bg="primary.200"
+              source={
+                value
+                  ? {
+                      uri: value,
+                    }
+                  : undefined
+              }
+            >
+              {`${user?.name?.[0]}${user?.surname?.[0]}`}
+            </Avatar>
+          </TouchableWithoutFeedback>
+        )}
+      />
+
       <Controller
         control={control}
         name="login"
@@ -93,6 +115,7 @@ export const EditForm = ({ onSubmit }: TEditFormProps) => {
         onPress={handleSubmit(onSubmit)}
         disabled={disabled}
         opacity={disabled ? 0.5 : 1}
+        isLoading={loading}
       >
         {t('btn_save')}
       </Button>

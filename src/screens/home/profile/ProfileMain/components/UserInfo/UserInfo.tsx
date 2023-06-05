@@ -13,9 +13,13 @@ export const UserInfo = ({ onPressEdit, onPressLogout }: TUserInfoProps) => {
       <Row alignItems="center">
         <Avatar
           bg="primary.200"
-          source={{
-            uri: 'https://bit.ly/broken-link',
-          }}
+          source={
+            user?.avatar
+              ? {
+                  uri: user.avatar,
+                }
+              : undefined
+          }
         >
           {`${user?.name?.[0]}${user?.surname?.[0]}`}
         </Avatar>
@@ -37,8 +41,12 @@ export const UserInfo = ({ onPressEdit, onPressLogout }: TUserInfoProps) => {
         <Button
           width="48%"
           onPress={onPressLogout}
-          backgroundColor="red.400"
+          _text={{
+            color: 'secondary.400',
+          }}
           borderRadius={50}
+          variant="outline"
+          borderColor="secondary.400"
         >
           {t('logout')}
         </Button>

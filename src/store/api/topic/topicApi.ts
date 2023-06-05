@@ -21,8 +21,11 @@ export const topicApi = createApi({
       },
       serializeQueryArgs: ({ queryArgs, endpointName }) => {
         const user = queryArgs?.userId ? `/userId=${queryArgs.userId}` : ''
+        const searchTerm = queryArgs?.searchTerm
+          ? `/searchTerm=${queryArgs.searchTerm}`
+          : ''
 
-        return endpointName + user
+        return endpointName + user + searchTerm
       },
       merge: (currentCache, newItems, { arg }) => {
         if (currentCache && arg.skip !== 0) {
@@ -33,10 +36,6 @@ export const topicApi = createApi({
 
         currentCache.models = newItems.models
         currentCache.totalCount = newItems.totalCount
-      },
-      // Refetch when the page arg changes
-      forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg
       },
     }),
 

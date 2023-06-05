@@ -13,6 +13,7 @@ export const TextArea = ({
   return (
     <FormControlWrapper label={label} error={error}>
       <NativeTextArea
+        autoCompleteType=""
         h={20}
         placeholder={placeholder}
         value={value}

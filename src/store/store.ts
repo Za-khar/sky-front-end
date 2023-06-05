@@ -6,6 +6,7 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 import { userApi } from './api/user'
 import { topicApi } from './api/topic'
 import { articleApi } from './api/article'
+import { commentApi } from './api/comment'
 
 export const store = configureStore({
   devTools: true,
@@ -14,6 +15,7 @@ export const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [topicApi.reducerPath]: topicApi.reducer,
     [articleApi.reducerPath]: articleApi.reducer,
+    [commentApi.reducerPath]: commentApi.reducer,
 
     userState: userReduces,
   },
@@ -23,6 +25,7 @@ export const store = configureStore({
       userApi.middleware,
       topicApi.middleware,
       articleApi.middleware,
+      commentApi.middleware,
     ]),
 })
 

@@ -17,15 +17,18 @@ export const SearchMainScreen = () => {
           options={{
             tabBarLabel: t('articles'),
           }}
-          component={ArticleLayout}
-        />
+        >
+          {() => <ArticleLayout withSearch />}
+        </Tab.Screen>
+
         <Tab.Screen
           options={{
             tabBarLabel: t('topics'),
           }}
           name="Topics"
-          component={TopicLayout}
-        ></Tab.Screen>
+        >
+          {() => <TopicLayout withSearch />}
+        </Tab.Screen>
       </Tab.Navigator>
     </Box>
   )

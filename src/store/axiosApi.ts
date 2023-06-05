@@ -13,8 +13,6 @@ const privateInstance = axios.create({
 // Request interceptor for API calls
 privateInstance.interceptors.request.use(
   async (config) => {
-    console.log('config: ', config)
-
     const accessToken = await AuthService.getAccessToken()
 
     if (accessToken && config.headers) {
@@ -34,7 +32,6 @@ privateInstance.interceptors.response.use(
     return response
   },
   async function (error) {
-    console.log('axiosError: ', error)
     const originalRequest = error.config
 
     if (error?.response?.status === 401 && !originalRequest._retry) {

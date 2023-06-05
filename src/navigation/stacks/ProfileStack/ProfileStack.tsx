@@ -7,6 +7,7 @@ import {
   ChangePasswordScreen,
 } from '@app/screens/home/profile'
 import { useTranslation } from 'react-i18next'
+import { ArticleStack } from '../ArticleStack'
 
 const Stack = createNativeStackNavigator<TProfileStack>()
 
@@ -35,6 +36,13 @@ export const ProfileStack = () => {
         }}
         name={EProfileStackScreens.ChangePassword}
         component={ChangePasswordScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name={EProfileStackScreens.ProfileArticleStack}
+        component={ArticleStack}
       />
     </Stack.Navigator>
   )

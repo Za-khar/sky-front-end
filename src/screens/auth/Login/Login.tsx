@@ -12,7 +12,7 @@ export const LoginScreen = () => {
   const { navigate } = useNavigation()
   const { t } = useTranslation()
 
-  const [login] = useLoginMutation()
+  const [login, { isLoading }] = useLoginMutation()
 
   const onPressRegistration = () => {
     navigate(EAuthStackScreens.Registration)
@@ -28,7 +28,7 @@ export const LoginScreen = () => {
         <MainLogo />
 
         <Center w="80%" alignSelf="center">
-          <LoginForm onSubmit={onSubmit} />
+          <LoginForm onSubmit={onSubmit} loading={isLoading} />
         </Center>
 
         <Button

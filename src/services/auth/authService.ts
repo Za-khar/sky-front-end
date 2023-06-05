@@ -35,21 +35,18 @@ class AuthService {
       if (!refreshToken) {
         return null
       }
-      console.log('refreshToken stasrt')
+
       const { data }: AxiosResponse<TTokens> = await apiPublic.post(
         `/auth/refresh-token`,
         {
           refreshToken: refreshToken.password,
         },
       )
-      console.log('refreshToken staendsrt123: ', data)
 
       await this.setTokens(data)
 
       return data.accessToken
     } catch {
-      console.log('refreshToken staendsrt123: ')
-
       await this.logout()
       return null
     }

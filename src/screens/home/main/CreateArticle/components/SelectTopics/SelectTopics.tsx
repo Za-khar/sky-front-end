@@ -1,11 +1,19 @@
 import React, { useState } from 'react'
 import { TSelectTopicsProps } from './types'
-import { Button, Modal } from 'native-base'
+import { Box, Button, Icon, IconButton, Modal, Row, Text } from 'native-base'
 import { TopicLayout } from '@app/components/layouts'
 import { TTopic } from '@app/types'
+import { useTranslation } from 'react-i18next'
+import { FormControlWrapper } from '@app/components/inputs'
+import VectorIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-export const SelectTopics = ({ onSelect, values }: TSelectTopicsProps) => {
+export const SelectTopics = ({
+  onSelect,
+  values,
+  error,
+}: TSelectTopicsProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const { t } = useTranslation()
 
   const onClose = () => {
     setIsOpen(false)
@@ -17,11 +25,15 @@ export const SelectTopics = ({ onSelect, values }: TSelectTopicsProps) => {
 
   const onSelectTopic = (data: TTopic, found: boolean) => {
     if (found) {
-      onSelect(values.filter((val) => val.id !== data.id))
+      remove(data)
       return
     }
 
     onSelect([...values, data])
+  }
+
+  const remove = (data: TTopic) => {
+    onSelect(values.filter((val) => val.id !== data.id))
   }
 
   const renderButton = (data: TTopic) => {
@@ -29,14 +41,45 @@ export const SelectTopics = ({ onSelect, values }: TSelectTopicsProps) => {
 
     return (
       <Button onPress={() => onSelectTopic(data, found)}>
-        {found ? 'Delete' : 'Select'}
+        {found ? t('btn_remove') : t('btn_select')}
       </Button>
     )
   }
 
   return (
-    <>
-      <Button onPress={onOpen}>Open</Button>
+    <FormControlWrapper error={error} label={t('select_topics')}>
+      <Button onPress={onOpen} variant="outline">
+        {t('btn_select')}
+      </Button>
+
+      <Row flexWrap="wrap">
+        {values.map((val) => (
+          <Box
+            margin="5px"
+            paddingLeft="10px"
+            key={val.id}
+            borderColor="primary.200"
+            borderWidth="1px"
+            borderRadius={50}
+            flexDirection="row"
+            alignItems="center"
+          >
+            <Text>{val.title}</Text>
+
+            <IconButton
+              onPress={() => remove(val)}
+              icon={
+                <Icon
+                  as={<VectorIcon name={'close'} />}
+                  size={5}
+                  mr="2"
+                  color="muted.400"
+                />
+              }
+            />
+          </Box>
+        ))}
+      </Row>
 
       <Modal
         useRNModal
@@ -47,17 +90,11 @@ export const SelectTopics = ({ onSelect, values }: TSelectTopicsProps) => {
       >
         <Modal.Content>
           <Modal.CloseButton />
-          <Modal.Header>Forgot Password?</Modal.Header>
+          <Modal.Header>{t('select_topics')}</Modal.Header>
 
-          <TopicLayout renderButton={renderButton} />
-
-          <Modal.Footer>
-            <Button flex="1" onPress={onClose}>
-              Proceed
-            </Button>
-          </Modal.Footer>
+          <TopicLayout renderButton={renderButton} withSearch />
         </Modal.Content>
       </Modal>
-    </>
+    </FormControlWrapper>
   )
 }

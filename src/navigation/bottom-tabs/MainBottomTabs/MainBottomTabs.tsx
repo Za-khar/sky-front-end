@@ -31,7 +31,7 @@ export const MainBottomTabs = () => {
   const { colors } = useTheme()
 
   return (
-    <Tab.Navigator initialRouteName={EMainBottomTabsStacks.ProfileStack}>
+    <Tab.Navigator initialRouteName={EMainBottomTabsStacks.MainStack}>
       <Tab.Screen
         options={({ route }) => ({
           tabBarStyle: ((route) => {
@@ -42,7 +42,6 @@ export const MainBottomTabs = () => {
             }
             return { display: 'flex' }
           })(route),
-
           headerShown: false,
           tabBarLabel: t('home_stack'),
           headerTitle: t('home_stack'),

@@ -25,6 +25,18 @@ export default {
   btn_add: 'Add',
   btn_remove: 'Remove',
   btn_publish: 'Publish',
+  comments: 'Comments',
+  btn_select: 'Select',
+  show_all: 'Show all',
+  btn_send: 'Send',
+  btn_confirm: 'Confirm',
+  btn_cancel: 'Cancel',
+
+  write_comment: 'Write comment',
+  comment: 'Comment',
+  comment_placeholder: 'Enter comment',
+
+  published: 'Published',
 
   home_stack: 'Home',
   search_stack: 'Search',
@@ -36,6 +48,9 @@ export default {
 
   topics: 'Topics',
   articles: 'Articles',
+
+  select_topics: 'Select topics',
+  total_count: 'Total count',
 
   create_article: 'Create article',
 
@@ -52,4 +67,10 @@ export default {
   profile_edit: 'Edit profile',
   description: 'Description',
   description_placeholder: 'Enter description',
+  newest: 'Newest',
+
+  delete_article: 'Delete article',
+  logout_confirmation: 'Are you sure you want to log out of your account?',
+  delete_account_confirmation: 'Are you sure you want to delete your account?',
+  delete_article_confirmation: 'Are you sure you want to delete the article?',
 }

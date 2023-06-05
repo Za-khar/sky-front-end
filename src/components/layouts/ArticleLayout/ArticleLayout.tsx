@@ -1,11 +1,26 @@
 import React, { useState } from 'react'
 import { TArticleLayoutProps } from './types'
-import { Box, FlatList, Heading, Text } from 'native-base'
+import { Box, Divider, FlatList, Heading } from 'native-base'
 import { SearchInput } from '@app/components/inputs'
 import { useGetArticlesQuery } from '@app/store/api/article'
+import { useTranslation } from 'react-i18next'
+import { ArticleCard } from '@app/components/cards'
+import { TArticle } from '@app/types/article'
+import { useNavigation } from '@react-navigation/native'
+import {
+  EArticleStackScreens,
+  EProfileStackScreens,
+} from '@app/navigation/stacks'
 const TAKE = 10
 
-export const ArticleLayout = ({ userId, topicId }: TArticleLayoutProps) => {
+export const ArticleLayout = ({
+  userId,
+  topicId,
+  withSearch,
+}: TArticleLayoutProps) => {
+  const { t } = useTranslation()
+  const navigation = useNavigation()
+
   const [options, setOptions] = useState<{
     searchTerm?: string
     skip: number
@@ -13,12 +28,17 @@ export const ArticleLayout = ({ userId, topicId }: TArticleLayoutProps) => {
     skip: 0,
   })
 
-  const { data, isLoading, isFetching } = useGetArticlesQuery({
-    topicId,
-    userId,
-    take: TAKE,
-    ...options,
-  })
+  const { data, isLoading, isFetching } = useGetArticlesQuery(
+    {
+      topicId,
+      userId,
+      take: TAKE,
+      ...options,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  )
 
   const loading = isLoading || isFetching
 
@@ -36,10 +56,32 @@ export const ArticleLayout = ({ userId, topicId }: TArticleLayoutProps) => {
     setOptions(value ? { skip: 0, searchTerm: value } : { skip: 0 })
   }
 
+  const onPressCard = (data: TArticle) => {
+    navigation.navigate(EProfileStackScreens.ProfileArticleStack, {
+      screen: EArticleStackScreens.Article,
+      params: {
+        articleId: data.id,
+      },
+    })
+  }
+
   return (
     <>
-      <Text>{data?.totalCount}</Text>
-      <SearchInput value={options?.searchTerm ?? ''} onChange={onSearch} />
+      {withSearch && (
+        <Box
+          paddingX="24px"
+          backgroundColor="white"
+          paddingY="12px"
+          borderBottomColor="primary.400"
+          borderBottomWidth="1px"
+        >
+          <SearchInput value={options?.searchTerm ?? ''} onChange={onSearch} />
+
+          <Heading mt="12px" size="xs">{`${t('total_count')} ${
+            data?.totalCount ?? 0
+          }`}</Heading>
+        </Box>
+      )}
 
       <FlatList
         data={data?.models ?? []}
@@ -49,23 +91,11 @@ export const ArticleLayout = ({ userId, topicId }: TArticleLayoutProps) => {
         refreshing={isLoading}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
-          return (
-            <Box
-              w="100%"
-              backgroundColor="white"
-              borderColor="primary.200"
-              borderTopWidth="0.5px"
-              borderBottomWidth="0.5px"
-              paddingX={10}
-              paddingY={5}
-              flexDirection="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Heading>{item?.title}</Heading>
-            </Box>
-          )
+          return <ArticleCard data={item} onPress={onPressCard} />
         }}
+        ListHeaderComponent={() => (
+          <Divider height="12px" backgroundColor="transparent" />
+        )}
       />
     </>
   )

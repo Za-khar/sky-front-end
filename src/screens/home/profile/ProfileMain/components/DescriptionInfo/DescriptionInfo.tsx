@@ -6,7 +6,7 @@ import { Text } from 'react-native'
 export const DescriptionInfo = () => {
   const { user } = useTypedSelector((store) => store.userState)
   return (
-    <Box>
+    <Box p={4}>
       <Text>{user?.description ?? ''}</Text>
     </Box>
   )

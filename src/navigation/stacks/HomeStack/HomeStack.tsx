@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { CreateArticleScreen, MainScreen } from '@app/screens/home/main'
 import { Icon, IconButton } from 'native-base'
 import VectorIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { ArticleStack } from '../ArticleStack'
 
 const Stack = createNativeStackNavigator<THomeStack>()
 
@@ -42,6 +43,14 @@ export const HomeStack = () => {
         }}
         name={EHomeStackScreens.CreateArticle}
         component={CreateArticleScreen}
+      />
+
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name={EHomeStackScreens.HomeArticleStack}
+        component={ArticleStack}
       />
     </Stack.Navigator>
   )

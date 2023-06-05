@@ -1,5 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { TCreateArticlePayload, TGetArticlesPayload } from './types'
+import {
+  TCreateArticlePayload,
+  TDeleteArticlePayload,
+  TGetArticleByIdPayload,
+  TGetArticlesPayload,
+  TRateArticlePayload,
+} from './types'
 import { axiosBaseQuery } from '@app/store/tools'
 
 export const articleApi = createApi({
@@ -34,10 +40,6 @@ export const articleApi = createApi({
         currentCache.models = newItems.models
         currentCache.totalCount = newItems.totalCount
       },
-      // Refetch when the page arg changes
-      forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg
-      },
     }),
     createArticle: builder.mutation<
       TCreateArticlePayload['response'],
@@ -50,8 +52,89 @@ export const articleApi = createApi({
           data,
         }
       },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          dispatch(
+            articleApi.util.updateQueryData(
+              'getArticles',
+              { userId: data.user.id },
+              (draft) => {
+                draft.models.unshift(data)
+                draft.totalCount += 1
+              },
+            ),
+          )
+        } catch (err) {
+          console.log(err)
+        }
+      },
+    }),
+
+    deleteArticle: builder.mutation<
+      TDeleteArticlePayload['response'],
+      TDeleteArticlePayload['request']
+    >({
+      query: (data) => {
+        return {
+          url: data.articleId,
+          method: 'DELETE',
+          data,
+        }
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          dispatch(
+            articleApi.util.updateQueryData(
+              'getArticles',
+              { userId: data.userId },
+              (draft) => {
+                draft.models = draft.models.filter((val) => val.id !== data.id)
+                draft.totalCount -= 1
+              },
+            ),
+          )
+        } catch (err) {
+          console.log(err)
+        }
+      },
+    }),
+
+    rateArticle: builder.mutation<
+      TRateArticlePayload['response'],
+      TRateArticlePayload['request']
+    >({
+      query: (data) => {
+        return {
+          url: 'rate',
+          method: 'POST',
+          data,
+        }
+      },
+    }),
+
+    getArticleById: builder.query<
+      TGetArticleByIdPayload['response'],
+      TGetArticleByIdPayload['request']
+    >({
+      query: (data) => {
+        return {
+          url: data.articleId,
+          method: 'GET',
+        }
+      },
+      providesTags: (result, error, arg) => [
+        { type: 'Article', id: arg.articleId },
+      ],
     }),
   }),
 })
 
-export const { useGetArticlesQuery, useCreateArticleMutation } = articleApi
+export const {
+  useGetArticlesQuery,
+  useCreateArticleMutation,
+  useGetArticleByIdQuery,
+  useRateArticleMutation,
+  useDeleteArticleMutation,
+} = articleApi

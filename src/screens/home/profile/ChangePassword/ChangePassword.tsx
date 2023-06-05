@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView, Center, Stack, Button } from 'native-base'
 import { useUpdateProfileMutation } from '@app/store/api/user'
 import { changePasswordSchema } from './validation'
@@ -7,10 +7,12 @@ import { TChangePasswordForm } from './types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'react-i18next'
 import { PasswordInput } from '@app/components/inputs'
+import { useNavigation } from '@react-navigation/native'
 
 export const ChangePasswordScreen = () => {
   const { t } = useTranslation()
-  const [updateProfile] = useUpdateProfileMutation()
+  const navigation = useNavigation()
+  const [updateProfile, { isLoading, isSuccess }] = useUpdateProfileMutation()
 
   const { control, handleSubmit } = useForm<TChangePasswordForm>({
     resolver: zodResolver(changePasswordSchema),
@@ -19,6 +21,12 @@ export const ChangePasswordScreen = () => {
   const onSubmit = (data: TChangePasswordForm) => {
     updateProfile(data)
   }
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigation.goBack()
+    }
+  }, [isSuccess])
 
   return (
     <ScrollView backgroundColor="white">
@@ -59,7 +67,11 @@ export const ChangePasswordScreen = () => {
               )}
             />
 
-            <Button w="60%" onPress={handleSubmit(onSubmit)}>
+            <Button
+              w="60%"
+              onPress={handleSubmit(onSubmit)}
+              isLoading={isLoading}
+            >
               {t('btn_change')}
             </Button>
           </Stack>

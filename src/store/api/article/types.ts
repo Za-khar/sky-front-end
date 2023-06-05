@@ -17,3 +17,25 @@ export type TCreateArticlePayload = {
   }
   response: TArticle
 }
+
+export type TDeleteArticlePayload = {
+  request: {
+    articleId: string
+  }
+  response: TArticle & { userId: string }
+}
+
+export type TGetArticleByIdPayload = {
+  request: {
+    articleId: string
+  }
+  response: TArticle
+}
+
+export type TRateArticlePayload = {
+  request: {
+    articleId: string
+    isLiked: boolean
+  }
+  response: { status: 'ok' }
+}

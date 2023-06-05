@@ -9,7 +9,7 @@ export const SearchInput = ({
   ...props
 }: TDefaultInputProps) => {
   const [searchValue, setSearchValue] = useState(value)
-  const debouncedValue = useDebounce(searchValue, 500)
+  const debouncedValue = useDebounce<string>(searchValue, 500)
 
   useEffect(() => {
     onChange(debouncedValue)
